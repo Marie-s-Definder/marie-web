@@ -1,0 +1,112 @@
+{
+    "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "cli": {
+        "cache": {
+            "enabled": true,
+            "environment": "all",
+            "path": "./node_modules/.angular-cache"
+        }
+    },
+    "newProjectRoot": "projects",
+    "projects": {
+        "mariee": {
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:application",
+                    "configurations": {
+                        "development": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.dev.ts"
+                                }
+                            ],
+                            "optimization": false,
+                            "sourceMap": true
+                        },
+                        "production": {
+                            "budgets": [],
+                            "outputHashing": "all",
+                            "statsJson": true
+                        }
+                    },
+                    "defaultConfiguration": "production",
+                    "options": {
+                        "assets": [
+                            "src/favicon.ico",
+                            "src/assets",
+                            {
+                                "glob": "**/*.svg",
+                                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/outline",
+                                "output": "/zorro-svg/assets/outline"
+                            }
+                        ],
+                        "browser": "src/main.ts",
+                        "extractLicenses": false,
+                        "index": "src/index.html",
+                        "inlineStyleLanguage": "scss",
+                        "outputPath": "dist/mariee",
+                        "polyfills": [
+                            "zone.js"
+                        ],
+                        "scripts": [],
+                        "styles": [
+                            "src/styles.scss"
+                        ],
+                        "tsConfig": "tsconfig.app.json"
+                    }
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "buildTarget": "mariee:build"
+                    }
+                },
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "configurations": {
+                        "development": {
+                            "buildTarget": "mariee:build:development"
+                        },
+                        "production": {
+                            "buildTarget": "mariee:build:production"
+                        }
+                    },
+                    "defaultConfiguration": "development"
+                }
+            },
+            "prefix": "mre",
+            "projectType": "application",
+            "root": "",
+            "schematics": {
+                "@schematics/angular:class": {
+                    "skipTests": true
+                },
+                "@schematics/angular:component": {
+                    "skipTests": true,
+                    "style": "scss"
+                },
+                "@schematics/angular:directive": {
+                    "skipTests": true
+                },
+                "@schematics/angular:guard": {
+                    "skipTests": true
+                },
+                "@schematics/angular:interceptor": {
+                    "skipTests": true
+                },
+                "@schematics/angular:pipe": {
+                    "skipTests": true
+                },
+                "@schematics/angular:resolver": {
+                    "skipTests": true
+                },
+                "@schematics/angular:service": {
+                    "skipTests": true
+                }
+            },
+            "sourceRoot": "src"
+        }
+    },
+    "version": 1
+}

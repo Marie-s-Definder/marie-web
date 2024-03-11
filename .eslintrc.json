@@ -1,0 +1,16 @@
+{
+    "extends": "@ng-all",
+    "root": true,
+    "rules": {
+        "@angular-eslint/prefer-on-push-component-change-detection": "off",
+        "@angular-eslint/template/no-call-expression": "off",
+        "lines-between-class-members": [
+            "error",
+            "always",
+            {
+                "exceptAfterSingleLine": true
+            }
+        ],
+        "no-dupe-class-members": "off"
+    }
+}

@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+@import "ng-zorro-antd/ng-zorro-antd.variable.css";
+// html,
+// body {
+//   padding: 0;
+//   margin: 0;
+//   height: 100%;
+//   overflow: hidden;
+// }
+// * {
+//   outline: none;
+//   box-sizing: border-box;
+// }
+::-webkit-scrollbar {
+    width: 13.5px;
+}
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 9px;
+    border: 3.6px solid transparent;
+    background-clip: content-box;
+    &:hover {
+        background-color: #a8bbbf;
+    }
+}

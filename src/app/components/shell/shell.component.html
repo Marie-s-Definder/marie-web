@@ -1,0 +1,52 @@
+<nz-layout>
+  <nz-header>
+    <img class="logo" src="./assets/icon.png" alt="LOGO">
+    <article routerLink="/">后勤智能机器人巡检系统</article>
+    <div class="menu">
+      <span>本机时间：{{ clock$ | async | date:'yyyy年MM月dd日 HH:mm:ss' }}</span>
+      <span nz-icon nzType="setting" nz-dropdown [nzDropdownMenu]="menu"></span>
+      <nz-dropdown-menu #menu="nzDropdownMenu">
+        <ul nz-menu>
+          <li nz-menu-item>
+            <span nz-icon nzType="apartment" nzTheme="outline"></span>
+            区域管理
+          </li>
+          <li nz-menu-item>
+            <span nz-icon nzType="robot" nzTheme="outline"></span>
+            机器人管理
+          </li>
+        </ul>
+      </nz-dropdown-menu>
+    </div>
+  </nz-header>
+  <nz-layout>
+    <nz-sider nzWidth="200px" nzTheme="dark">
+      <ul nz-menu nzMode="inline" class="sider-menu">
+        @for (area of areas; track area.id;) {
+        <li nz-submenu [nzTitle]="area.name" [nzOpen]="area.selected" [nzIcon]="area.icon || 'apartment'">
+          @if( area.children && area.children.length > 0 ){
+          <ul>
+            @for (item of area.children; track item.id;) {
+            <li nz-menu-item [nzMatchRouter]="true" [routerLink]="[ './overview', item.id ]">
+              <span nz-icon [nzType]="item.icon || 'appstore'"></span>
+              <span>{{ item.name }}</span>
+            </li>
+            }
+          </ul>
+          }
+        </li>
+        }
+      </ul>
+    </nz-sider>
+    <nz-layout class="inner">
+      <!-- <nz-breadcrumb>
+        <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+        <nz-breadcrumb-item>List</nz-breadcrumb-item>
+        <nz-breadcrumb-item>App</nz-breadcrumb-item>
+      </nz-breadcrumb> -->
+      <nz-content>
+        <router-outlet />
+      </nz-content>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>

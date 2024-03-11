@@ -1,0 +1,66 @@
+@if ( area ) {
+<h3>{{ area.name }}</h3>
+@if( droidOptions.length == 0 ){
+<div>该区域没有相关机器人信息</div>
+}@else {
+@if(droidOptions.length>1){
+<nz-segmented [nzOptions]="droidOptions" nzSize="large" (nzValueChange)="onSelectDroid($event);"></nz-segmented>
+}@else if( droidOptions.length==1 ){
+<h4>{{ droidOptions[0].label }}</h4>
+}
+<main>
+  <nz-card nzTitle="实时监控" [nzExtra]="snapshot">
+    @if( !isLive() ){
+    <div nz-icon [nzType]=" isLive() == false ? 'loading' : 'play-circle' " (click)="onLiveClick();"></div>
+    }
+    <div class="holder" #liveHolder></div>
+  </nz-card>
+  <ng-template #snapshot>
+    <button nz-button nzType="default" nzShape="round" (click)="onSnapshot();">
+      <span nz-icon nzType="camera" nzTheme="outline"></span>
+      视频截图
+    </button>
+    <button nz-button nzType="text" nzShape="circle" (click)="onLiveClick();">
+      <span nz-icon nzType="reload" nzTheme="outline"></span>
+    </button>
+  </ng-template>
+  <nz-card class="droid-ctrl" nzTitle="机器人控制">
+    <article class="ipc-ctrl">
+      <nav>摄像头控制</nav>
+      <div>
+        <div>
+          <button nz-button nzType="primary" nzShape="circle" (click)="onIpcControl('up');">
+            <span nz-icon nzType="arrow-up"></span>
+          </button>
+        </div>
+        <div>
+          <button nz-button nzType="primary" nzShape="circle" (click)="onIpcControl('left');">
+            <span nz-icon nzType="arrow-left"></span>
+          </button>
+        </div>
+        <div>
+          <button nz-button nzType="primary" nzShape="circle" (click)="onIpcControl('right');">
+            <span nz-icon nzType="arrow-right"></span>
+          </button>
+        </div>
+        <div>
+          <button nz-button nzType="primary" nzShape="circle" (click)="onIpcControl('down');">
+            <span nz-icon nzType="arrow-down"></span>
+          </button>
+        </div>
+      </div>
+      <footer>
+        <button nz-button nzType="primary" nzShape="circle">
+          <span nz-icon nzType="zoom-in"></span>
+        </button>
+        <button nz-button nzType="primary" nzShape="circle">
+          <span nz-icon nzType="zoom-out"></span>
+        </button>
+      </footer>
+    </article>
+  </nz-card>
+</main>
+}
+} @else {
+<div>所选区域不存在</div>
+}
