@@ -25,5 +25,3 @@ ENV TZ=Asia/Shanghai
 EXPOSE 80
 
 CMD [ "nginx", "-g", "daemon off;" ]
-
-# docker build -t mariee-web:latest .
