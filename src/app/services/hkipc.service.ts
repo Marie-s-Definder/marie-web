@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ApiResult } from '../models/api-result.model';
 import { InteractionService } from './interaction.service';
@@ -17,7 +17,9 @@ export class HkIpcService {
     public async getLiveUrl(id: string): Promise<string> {
         const res: ApiResult<string> = await firstValueFrom(this.http.get<ApiResult<string>>(`${environment.apiUrl}/hkipc/liveUrl`, {
             params: { id },
-        }));
+        }).pipe(
+            catchError(() => of({ ok: false, data: '' })),
+        ));
 
         return res.ok ? res.data : '';
     }
@@ -26,7 +28,9 @@ export class HkIpcService {
         await this.interaction.toast('努力截图中...', { type: 'loading' });
         const res: ApiResult<string> = await firstValueFrom(this.http.get<ApiResult<string>>(`${environment.apiUrl}/hkipc/snapshot`, {
             params: { id },
-        }));
+        }).pipe(
+            catchError(() => of({ ok: false, data: '' })),
+        ));
         if (res.ok) {
             await this.interaction.toast('截图成功');
             return res.data;
@@ -37,20 +41,23 @@ export class HkIpcService {
 
     public async pan(id: string, direction: 'left' | 'right'): Promise<void> {
         await this.interaction.toast('努力移动中...', { type: 'loading' });
-        await firstValueFrom(this.http.get(`${environment.apiUrl}/hkipc/pan`, {
+        const res: ApiResult<string> = await firstValueFrom(this.http.get<ApiResult<string>>(`${environment.apiUrl}/hkipc/pan`, {
             params: { id, direction },
-        }));
+        }).pipe(
+            catchError(() => of({ ok: false, data: '' })),
+        ));
 
-        await this.interaction.toast('移动完成');
+        await this.interaction.toast(res.ok ? '移动完成' : '移动未完成');
     }
 
     public async tilt(id: string, direction: 'up' | 'down'): Promise<void> {
         await this.interaction.toast('努力移动中...', { type: 'loading' });
-        await firstValueFrom(this.http.get(`${environment.apiUrl}/hkipc/tilt`, {
+        const res: ApiResult<string> = await firstValueFrom(this.http.get<ApiResult<string>>(`${environment.apiUrl}/hkipc/tilt`, {
             params: { id, direction },
-        }));
-
-        await this.interaction.toast('移动完成');
+        }).pipe(
+            catchError(() => of({ ok: false, data: '' })),
+        ));
+        await this.interaction.toast(res.ok ? '移动完成' : '移动未完成');
     }
 
 }
