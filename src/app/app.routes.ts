@@ -9,4 +9,7 @@ export const routes: Routes = [{
 }, {
     path: 'overview/:areaId',
     loadComponent: async () => import('../modules/overview/overview.component').then(i => i.OverviewComponent),
+}, {
+    path: 'robotsstatues/:areaId',
+    loadComponent: async () => import('../modules/robotsstatues/robotsstatues.component').then(i => i.RobotsstatuesComponent),
 }];

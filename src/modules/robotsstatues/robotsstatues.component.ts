@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, Renderer2, ViewChild, WritableSignal, signal, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, Renderer2, ViewChild, WritableSignal, signal } from '@angular/core';
 import { NzCardComponent } from 'ng-zorro-antd/card';
 import { NzSegmentedComponent, NzSegmentedOption } from 'ng-zorro-antd/segmented';
 import { Area, AreaService } from '../../app/services/area.service';
@@ -9,14 +9,15 @@ import Hls from 'hls.js';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { HkIpcService } from '../../app/services/hkipc.service';
-import { GetRobotStatusService, RandomUser } from '../../app/services/getrobotstatus.service';
+import { GetDataService, RandomUser } from '../../app/services/getdata.service';
 import { InteractionService } from '../../app/services/interaction.service';
-
-// import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { CommonModule } from '@angular/common';
-import { NzTableQueryParams, NzTableModule, NzTableFilterList, NzTableSize } from 'ng-zorro-antd/table';
-import { Router } from '@angular/router';
+import { NzTableModule, NzTableFilterList, NzTableSize } from 'ng-zorro-antd/table';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
     imports: [
@@ -28,14 +29,17 @@ import { Router } from '@angular/router';
         CommonModule,
         NzTableModule,
         NzDropDownModule,
+        FormsModule,
+        BrowserModule,
+        NzDatePickerModule,
     ],
     standalone: true,
     selector: 'mre-overview',
-    templateUrl: './overview.component.html',
-    styleUrl: './overview.component.scss',
+    templateUrl: './robotsstatues.component.html',
+    styleUrl: './robotsstatues.component.scss',
 })
 
-export class OverviewComponent implements OnInit {
+export class RobotsstatuesComponent {
 
     @ViewChild('liveHolder', { read: ElementRef })
     private readonly liveHolderRef?: ElementRef<HTMLDivElement>;
@@ -62,7 +66,7 @@ export class OverviewComponent implements OnInit {
 
     public size: NzTableSize = 'small';
 
-    public value?: string;
+    public date: null = null;
 
     public filterGender: NzTableFilterList = [
         { text: 'male', value: 'male' },
@@ -71,7 +75,7 @@ export class OverviewComponent implements OnInit {
 
     public pageIndex: number = 1;
 
-    public displayText: string = '默认第一个机器人';
+    public modalWidth: string = 'auto';
 
     private selectedDroidIndex?: number;
 
@@ -85,56 +89,51 @@ export class OverviewComponent implements OnInit {
         private readonly droidService: DroidService,
         private readonly ipcService: HkIpcService,
         private readonly interaction: InteractionService,
-        private readonly randomUserService: GetRobotStatusService,
-        private readonly router: Router,
+        private readonly randomUserService: GetDataService,
     ) { }
 
+    // 是
     @Input()
-    private set areaId(value: string) {
-        this.value = value;
-        if (!value) { return; }
+    private set areaId(thevalue: string) {
+        if (!thevalue) { return; }
         this.disposeLive();
-        this.area = this.areaService.getById(value) ?? undefined;
-        this.droids = this.droidService.getByArea(value);
+        const value: Array<string> = thevalue.split('|');
+        this.area = this.areaService.getById(value[0]) ?? undefined;
+        this.droids = this.droidService.getByArea(value[0]);
 
         if (Array.isArray(this.droids) && this.droids.length > 0) {
             this.droidOptions = this.droids.map<NzSegmentedOption>(i => ({ label: i.name, value: i.id, icon: 'video-camera' }));
-            this.selectedDroidIndex = 0;
+            this.selectedDroidIndex = Number(value[0]);
         } else {
             this.droidOptions = new Array<NzSegmentedOption>();
         }
     }
 
-    // changeOption作用一样
-    public async change2handelmode(): Promise<void> {
-        // await this.router.navigate(['/robotsstatues', this.value]);
-        const value: string = `${this.value}|${this.selectedDroidIndex}`;
-        await this.router.navigate(['/robotsstatues', value]);
+    public showModal(): void {
+        this.isVisible = true;
+        this.loadDataFromServer([]);
     }
 
-    public onQueryParamsChange(params: NzTableQueryParams): void {
-        const { pageSize, pageIndex, filter } = params;
-        this.loadDataFromServer(pageIndex, pageSize, filter);
+    public handleCancel(): void {
+        this.isVisible = false;
     }
 
-    // 对于buildingname和roomname首先传进来是007011，我需要分割为007和011，然后roomname直接就是area.name，然后看007，想办法去掉前面的0得到7然后找到areaservice里面id为7对应的name
+    // 1
     public loadDataFromServer(
-        pageIndex: number,
-        pageSize: number,
-        filter: Array<{ key: string; value: Array<string> }>,
+        startendTime: Array<Date>,
     ): void {
-        const buildingname: string = '10号楼';
-        const roomname: string = '夹层';
+        const robotid: string = '0';
+        const deviceName: string = '仪表';
         this.loading = true;
-        this.randomUserService.getUsers(buildingname, roomname, pageIndex, pageSize, filter).subscribe(data => {
+        this.randomUserService.getUsers(robotid, deviceName, startendTime).subscribe(data => {
             this.loading = false;
             this.total = 200;
             this.listOfRandomUser = data.data;
         });
     }
 
-    public ngOnInit(): void {
-        this.loadDataFromServer(this.pageIndex, this.pageSize, []);
+    public onChange(result: Array<Date>): void {
+        this.loadDataFromServer(result);
     }
 
     public async onLiveClick(): Promise<void> {
@@ -157,22 +156,37 @@ export class OverviewComponent implements OnInit {
         }
     }
 
-    public async changeOption(idipc: string, name: string): Promise<void> {
-        const choosedid: number = Number(idipc);
-        this.selectedDroidIndex = choosedid;
-        this.displayText = name;
-        if (this.isLive() ?? false) {
-            this.disposeLive();
-            await this.onLiveClick();
+    public async onIpcControl(action: 'up' | 'down' | 'left' | 'right'): Promise<void> {
+        if (typeof this.selectedDroidIndex != 'number') { return; }
+        const droid: Droid | undefined = this.droids?.[this.selectedDroidIndex];
+        if (droid?.ipcId) {
+            switch (action) {
+                case 'up':
+                    await this.ipcService.tilt(droid.ipcId, 'up');
+                    break;
+                case 'down':
+                    await this.ipcService.tilt(droid.ipcId, 'down');
+                    break;
+                case 'left':
+                    await this.ipcService.pan(droid.ipcId, 'left');
+                    break;
+                case 'right':
+                    await this.ipcService.pan(droid.ipcId, 'right');
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-    public async changeTry(): Promise<void> {
-        const index: number = 2;
-        this.selectedDroidIndex = index;
-        if (this.isLive() ?? false) {
-            this.disposeLive();
-            await this.onLiveClick();
+    public async onSnapshot(): Promise<void> {
+        if (typeof this.selectedDroidIndex != 'number') { return; }
+        const droid: Droid | undefined = this.droids?.[this.selectedDroidIndex];
+        if (droid?.ipcId) {
+            const res: string = await this.ipcService.snapshot(droid.ipcId);
+            if (res) {
+                window.open(`${environment.apiUrl}/${res}`, '_blank');
+            }
         }
     }
 

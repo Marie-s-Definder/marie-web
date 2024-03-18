@@ -8,7 +8,9 @@ import { NzContentComponent, NzHeaderComponent, NzLayoutComponent, NzSiderCompon
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { Observable, interval, map } from 'rxjs';
 import { Area, AreaService } from '../../services/area.service';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
+// 是
 @Component({
     imports: [
         AsyncPipe,
@@ -26,6 +28,7 @@ import { Area, AreaService } from '../../services/area.service';
         NzLayoutComponent,
         NzMenuModule,
         NzSiderComponent,
+        NzButtonModule,
     ],
     providers: [
     ],

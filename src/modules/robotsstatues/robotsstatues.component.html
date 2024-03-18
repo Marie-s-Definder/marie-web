@@ -1,0 +1,138 @@
+@if ( area ) {
+    <h3>查看设备</h3>
+    @if( droidOptions.length == 0 ){
+    <div>该区域没有相关机器人信息</div>
+    }@else {
+    @if(droidOptions.length>1){
+    <!-- <nz-segmented [nzOptions]="droidOptions" nzSize="large" (nzValueChange)="onSelectDroid($event);"></nz-segmented> -->
+    <nz-card class = "equipments">
+        <div class="container">
+            <button nz-button nzType="primary"  (click)="showModal()">
+                <span>IOC进化空调1</span>
+            </button>
+
+            <button nz-button nzType="primary"  (click)="showModal()">
+                <span>IOC进化空调2</span>
+            </button>
+        </div>
+    </nz-card>
+    }
+    @else if( droidOptions.length==1 )
+    {
+    <h4>{{ droidOptions[0].label }}</h4>
+    }
+    <main>
+      <nz-card nzTitle="实时监控" [nzExtra]="snapshot">
+        @if( !isLive() ){
+        <div nz-icon [nzType]=" isLive() == false ? 'loading' : 'play-circle' " (click)="onLiveClick();"></div>
+        }
+        <div class="holder" #liveHolder></div>
+      </nz-card>
+      <ng-template #snapshot>
+        <button nz-button nzType="default" nzShape="round" (click)="onSnapshot();">
+          <span nz-icon nzType="camera" nzTheme="outline"></span>
+          视频截图
+        </button>
+        <button nz-button nzType="text" nzShape="circle" (click)="onLiveClick();">
+          <span nz-icon nzType="reload" nzTheme="outline"></span>
+        </button>
+      </ng-template>
+      <nz-card class="droid-ctrl" nzTitle="机器人控制面板">
+        <article class="ipc-ctrl">
+          <!-- <nav>摄像头控制</nav> -->
+          <div>
+            <div>
+                <button class="robotctrl" nz-button nzType="primary" nzShape="circle" (click)="onIpcControl('up');">
+                    <span nz-icon nzType="arrow-up"></span>
+                </button>
+            </div>
+            <div>
+                <button class="robotctrl" nz-button nzType="primary" nzShape="circle" (click)="onIpcControl('left');">
+                    <span nz-icon nzType="arrow-left"></span>
+                </button>
+            </div>
+            <div>
+                <button class="robotctrl" nz-button nzType="primary" nzShape="circle" (click)="onIpcControl('right');">
+                    <span nz-icon nzType="arrow-right"></span>
+                </button>
+            </div>
+            <div>
+                <button class="robotctrl" nz-button nzType="primary" nzShape="circle" (click)="onIpcControl('down');">
+                    <span nz-icon nzType="arrow-down"></span>
+                </button>
+            </div>
+            <div>
+                <button class="robotctrl" nz-button nzType="primary" nzShape="circle">
+                    <span nz-icon nzType="zoom-in"></span>
+                </button>
+            </div>
+            <div>
+                <button class="robotctrl" nz-button nzType="primary" nzShape="circle">
+                <span nz-icon nzType="zoom-out"></span>
+                </button>
+            </div>
+          </div>
+        </article>
+      </nz-card>
+    </main>
+    }
+    } @else {
+    <div>所选区域不存在</div>
+    }
+
+    <!-- 弹出对话框内容 -->
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="查看设备" (nzOnCancel)="handleCancel()" [nzFooter]=null [nzWidth]="modalWidth" [nzBodyStyle]="{ 'overflow': 'auto' }">
+        <ng-container *nzModalContent>
+            <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+                筛选条件
+                <i nz-icon nzType="down"></i>
+            </button>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu>
+                  <li nz-menu-item>
+                    <a>最近七天</a>
+                  </li>
+                </ul>
+            </nz-dropdown-menu>
+            <nz-range-picker [nzShowTime]="true" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
+            <nz-table
+            [nzFooter]="null"
+            [nzData]="listOfRandomUser"
+            [nzFrontPagination]="false"
+            [nzShowPagination]="false"
+            [nzShowSizeChanger]="false"
+            [nzLoading]="loading"
+            [nzTotal]="total"
+            [nzSize]="size"
+            [nzPageSize]="pageSize"
+            [nzPageIndex]="pageIndex"
+            >
+            <thead>
+                <tr>
+                <th>数据编号</th>
+                <th>设备名称</th>
+                <th>录入日期</th>
+                <th>数据名称</th>
+                <th>数据结果</th>
+                <th>数据状态</th>
+                <th>巡检图片</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of listOfRandomUser">
+                <td>{{ data.id }}</td>
+                <td>{{ data.deviceName }}</td>
+                <td>{{ data.date }}</td>
+                <td>{{ data.name }}</td>
+                <td>{{ data.result }}</td>
+                <td>{{ data.status }}</td>
+                <td>
+                    <!-- <button nzType="primary" (click)="change2handelmode()">进入机器人</button> -->
+                    <button nzType="primary">{{ data.name }}</button>
+                </td>
+                </tr>
+            </tbody>
+            </nz-table>
+        </ng-container>
+    </nz-modal>
+
