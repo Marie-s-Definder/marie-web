@@ -18,7 +18,7 @@ export interface RandomUser {
 export class GetDataService {
 
     // private readonly http: HttpClient;
-    public constructor(private readonly http: HttpClient) {}
+    public constructor(private readonly http: HttpClient) { }
 
     public getUsers(
         robotid: string,
@@ -30,8 +30,7 @@ export class GetDataService {
             .append('deviceName', `${deviceName}`)
             .append('startTime', `${startendTime[0].toISOString()}`)
             .append('endTime', `${startendTime[1].toISOString()}`);
-        return this.http
-            .get<{ data: Array<RandomUser> }>(`${environment.getdatastatusurl}`, { params })
+        return this.http.get<{ data: Array<RandomUser> }>(`${environment.apiUrl}/hkipc/queryAllData`, { params })
             .pipe(catchError(() => of({ data: [] })));
     }
 

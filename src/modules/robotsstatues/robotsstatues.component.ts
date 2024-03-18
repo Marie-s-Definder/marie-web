@@ -1,23 +1,22 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, Input, Renderer2, ViewChild, WritableSignal, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NzCardComponent } from 'ng-zorro-antd/card';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzSegmentedComponent, NzSegmentedOption } from 'ng-zorro-antd/segmented';
 import { Area, AreaService } from '../../app/services/area.service';
 import { Droid, DroidService } from '../../app/services/droid.service';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 import Hls from 'hls.js';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
-import { HkIpcService } from '../../app/services/hkipc.service';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzTableFilterList, NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
 import { GetDataService, RandomUser } from '../../app/services/getdata.service';
+import { HkIpcService } from '../../app/services/hkipc.service';
 import { InteractionService } from '../../app/services/interaction.service';
 import { environment } from '../../environments/environment';
-import { NzModalModule } from 'ng-zorro-antd/modal';
-import { CommonModule } from '@angular/common';
-import { NzTableModule, NzTableFilterList, NzTableSize } from 'ng-zorro-antd/table';
-import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 
 @Component({
     imports: [
@@ -30,7 +29,6 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
         NzTableModule,
         NzDropDownModule,
         FormsModule,
-        BrowserModule,
         NzDatePickerModule,
     ],
     standalone: true,
@@ -38,7 +36,6 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     templateUrl: './robotsstatues.component.html',
     styleUrl: './robotsstatues.component.scss',
 })
-
 export class RobotsstatuesComponent {
 
     @ViewChild('liveHolder', { read: ElementRef })

@@ -35,7 +35,7 @@ export class GetRobotStatusService {
             });
         });
         return this.http
-            .get<{ data: Array<RandomUser> }>(`${environment.getrobotstatusurl}`, { params })
+            .get<{ data: Array<RandomUser> }>(`${environment.apiUrl}/hkipc/queryRobot`, { params })
             .pipe(catchError(() => of({ data: [] })));
     }
 
