@@ -44,7 +44,6 @@ export class GetDataService {
                 .append('startTime',this.returnDate(startendTime[0]))
                 .append('endTime', this.returnDate(startendTime[1]));
         }
-        console.log(params);
         return this.http.get<{ data: Array<RandomUser> }>(`${environment.apiUrl}/hkipc/queryAllData`, { params })
             .pipe(catchError(() => of({ data: [] })));
 
