@@ -156,6 +156,7 @@ export class OverviewComponent implements OnInit {
 
     private async loadLive(ipcId: string): Promise<void> {
         const liveUrl: string = await this.ipcService.getLiveUrl(ipcId);
+        console.log(liveUrl);
         if (!liveUrl) {
             this.isLive.set(undefined);
             await this.interaction.toast('获取当前摄像头实时监控失败');
