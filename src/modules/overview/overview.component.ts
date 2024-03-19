@@ -15,7 +15,7 @@ import { InteractionService } from '../../app/services/interaction.service';
 // import { environment } from '../../environments/environment';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { CommonModule } from '@angular/common';
-import { NzTableQueryParams, NzTableModule, NzTableFilterList, NzTableSize } from 'ng-zorro-antd/table';
+import { NzTableModule, NzTableFilterList, NzTableSize } from 'ng-zorro-antd/table';
 import { Router } from '@angular/router';
 
 @Component({
@@ -126,7 +126,7 @@ export class OverviewComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        let front = this.value?.slice(0, 3).replace(/^0+/, '');
+        const front: string | undefined = this.value?.slice(0, 3).replace(/^0+/u, '');
         if (!front) { return; }
         const buildingname: string | null = this.areaService.findNameById(front);
         const roomname: string | undefined = this.area?.name;

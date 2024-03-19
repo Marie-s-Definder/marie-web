@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
 import { Component, ElementRef, Input, Renderer2, ViewChild, WritableSignal, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NzCardComponent } from 'ng-zorro-antd/card';
@@ -13,11 +13,10 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzTableFilterList, NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
-import { GetDataService, RandomUser, robotGet } from '../../app/services/getdata.service';
+import { GetDataService, RandomUser, RobotGet } from '../../app/services/getdata.service';
 import { HkIpcService } from '../../app/services/hkipc.service';
 import { InteractionService } from '../../app/services/interaction.service';
 import { environment } from '../../environments/environment';
-import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
 
 registerLocaleData(zh);
@@ -61,7 +60,7 @@ export class RobotsstatuesComponent {
 
     public listOfRandomUser: Array<RandomUser> = [];
 
-    public listOfrobotGet: Array<robotGet> = [];
+    public listOfrobotGet: Array<RobotGet> = [];
 
     public loading: boolean = true;
 
@@ -115,13 +114,12 @@ export class RobotsstatuesComponent {
         } else {
             this.droidOptions = new Array<NzSegmentedOption>();
         }
-
     }
 
     public showModal(deviceName: string): void {
         this.isVisible = true;
         this.deviceName = deviceName;
-        this.loadDataFromServer(this.robotId,deviceName,[]);
+        this.loadDataFromServer(this.robotId, deviceName, []);
     }
 
     public handleCancel(): void {
@@ -136,39 +134,38 @@ export class RobotsstatuesComponent {
         this.isVisiblepic = false;
     }
 
-    public showPic(path:string): void{
+    public showPic(path: string): void {
         window.open(`${environment.apiUrl}/${path}`, '_blank');
     }
 
     public getDevice(): void {
-
-
         this.loading = true;
         this.randomUserService.getButtoneed(this.robotId).subscribe(data => {
             this.loading = false;
             this.total = 200;
-            // this.listOfrobotGet = data.data;
-            data.data.forEach(data => console.log(this.createButton(data.name)))
+            data.data.forEach(innerData => {
+                this.createButton(innerData.name);
+            });
         });
-
     }
 
     public createButton(buttonname: string): void {
-        let container = document.querySelector(".container");
-        if(!container){return;}
+        const container: HTMLElement | null = document.querySelector('.container');
+        if (!container) { return; }
+
         // 创建一个新的按钮元素
-        let button = document.createElement("button");
+        const button: HTMLButtonElement = document.createElement('button');
 
         // 设置按钮的文本为按钮名称
-        button.innerText = buttonname;
+        button.textContent = buttonname;
 
         // 添加点击事件
-        button.addEventListener("click", () => {
+        button.addEventListener('click', () => {
             this.showModal(buttonname);
         });
 
         // 将按钮添加到容器中
-        container.appendChild(button);
+        container.append(button);
     }
 
     // 1
@@ -186,18 +183,19 @@ export class RobotsstatuesComponent {
     }
 
     public onChange(result: Array<Date>): void {
-        this.loadDataFromServer(this.robotId,this.deviceName,result);
-    }
-    public doCheck(): void {
-        this.loadDataFromServer(this.robotId,this.deviceName,this.getDates());
+        this.loadDataFromServer(this.robotId, this.deviceName, result);
     }
 
-    public getDates():Array<Date> {
-        var currentDate = new Date(); // 获取当前时间
-        var pastDate = new Date(currentDate); // 创建当前时间的副本
-        pastDate.setHours(currentDate.getHours() - 24); // 减去24小时
+    public doCheck(): void {
+        this.loadDataFromServer(this.robotId, this.deviceName, this.getDates());
+    }
+
+    public getDates(): Array<Date> {
+        const currentDate: Date = new Date();
+        const pastDate: Date = new Date(currentDate);
+        pastDate.setHours(currentDate.getHours() - 24);
         return [pastDate, currentDate];
-      }
+    }
 
     public async onLiveClick(): Promise<void> {
         if (typeof this.robotId != 'number') { return; }

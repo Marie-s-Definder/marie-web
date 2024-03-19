@@ -21,7 +21,7 @@ export class GetRobotStatusService {
         buildingname: string | null,
         roomname: string | undefined,
     ): Observable<{ data: Array<RandomUser> }> {
-        let params: HttpParams = new HttpParams()
+        const params: HttpParams = new HttpParams()
             .append('building', `${buildingname}`)
             .append('room', `${roomname}`);
         return this.http

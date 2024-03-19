@@ -344,9 +344,9 @@ export class AreaService {
     }
 
     public findNameById(id: string): string | null {
-        for (let i = 0; i < this.areas.length; i++) {
-            if (this.areas[i].id === id) {
-                return this.areas[i].name;
+        for (const area of this.areas) {
+            if (area.id === id) {
+                return area.name;
             }
         }
         return null;
