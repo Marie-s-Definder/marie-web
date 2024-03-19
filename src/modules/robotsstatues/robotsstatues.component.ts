@@ -76,11 +76,6 @@ export class RobotsstatuesComponent {
 
     public deviceName: string = 'none';
 
-    public filterGender: NzTableFilterList = [
-        { text: 'male', value: 'male' },
-        { text: 'female', value: 'female' },
-    ];
-
     public pageIndex: number = 1;
 
     public modalWidth: string = 'auto';
@@ -242,7 +237,7 @@ export class RobotsstatuesComponent {
 
     public async onSnapshot(): Promise<void> {
         if (typeof this.robotId != 'number') { return; }
-        const droid: Droid | undefined = this.droids?.[this.robotId];
+        const droid: Droid | undefined = this.droids?.[this.robotId - 1];
         if (droid?.ipcId) {
             const res: string = await this.ipcService.snapshot(droid.ipcId);
             if (res) {
