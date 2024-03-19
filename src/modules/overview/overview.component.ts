@@ -15,7 +15,7 @@ import { InteractionService } from '../../app/services/interaction.service';
 // import { environment } from '../../environments/environment';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { CommonModule } from '@angular/common';
-import { NzTableModule, NzTableFilterList, NzTableSize } from 'ng-zorro-antd/table';
+import { NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
 import { Router } from '@angular/router';
 
 @Component({
@@ -52,6 +52,8 @@ export class OverviewComponent implements OnInit {
 
     public total: number = 1;
 
+    public droid: Droid | undefined;
+
     public listOfRandomUser: Array<RandomUser> = [];
 
     public loading: boolean = true;
@@ -64,16 +66,11 @@ export class OverviewComponent implements OnInit {
 
     public value?: string;
 
-    public filterGender: NzTableFilterList = [
-        { text: 'male', value: 'male' },
-        { text: 'female', value: 'female' },
-    ];
-
     public pageIndex: number = 1;
 
-    public displayText: string = '默认第一个机器人';
+    public displayText: string = '';
 
-    private selectedDroidIndex?: number;
+    private selectedDroidIndex: number = 1;
 
     private liveVideoNode?: HTMLVideoElement;
 
@@ -99,17 +96,10 @@ export class OverviewComponent implements OnInit {
 
         if (Array.isArray(this.droids) && this.droids.length > 0) {
             this.droidOptions = this.droids.map<NzSegmentedOption>(i => ({ label: i.name, value: i.id, icon: 'video-camera' }));
-            this.selectedDroidIndex = 0;
+            this.selectedDroidIndex = 1;
         } else {
             this.droidOptions = new Array<NzSegmentedOption>();
         }
-    }
-
-    // changeOption作用一样
-    public async change2handelmode(robotid: string): Promise<void> {
-        // await this.router.navigate(['/robotsstatues', this.value]);
-        const value: string = `${this.value}|${robotid}`;
-        await this.router.navigate(['/robotsstatues', value]);
     }
 
     // 对于buildingname和roomname首先传进来是007011，我需要分割为007和011，然后roomname直接就是area.name，然后看007，想办法去掉前面的0得到7然后找到areaservice里面id为7对应的name
@@ -122,7 +112,13 @@ export class OverviewComponent implements OnInit {
             this.loading = false;
             this.total = 200;
             this.listOfRandomUser = data.data;
+            this.changename(this.listOfRandomUser[0].name, this.listOfRandomUser[0].id);
         });
+    }
+
+    public changename(text: string, id: number): void {
+        this.displayText = text;
+        this.selectedDroidIndex = id;
     }
 
     public ngOnInit(): void {
@@ -135,41 +131,27 @@ export class OverviewComponent implements OnInit {
 
     public async onLiveClick(): Promise<void> {
         if (typeof this.selectedDroidIndex != 'number') { return; }
-        const droid: Droid | undefined = this.droids?.[this.selectedDroidIndex];
-        if (droid?.ipcId) {
+        this.droid = this.droids?.[this.selectedDroidIndex - 1];
+        if (this.droid?.ipcId) {
             this.disposeLive();
             this.isLive.set(false);
-            await this.loadLive(droid.ipcId);
+            await this.loadLive(this.droid.ipcId);
         } else {
             await this.interaction.toast('没有找到当前机器人相关的摄像头信息');
         }
     }
 
-    public async onSelectDroid(index: number): Promise<void> {
-        this.selectedDroidIndex = index;
-        if (this.isLive() ?? false) {
-            this.disposeLive();
-            await this.onLiveClick();
-        }
+    // changeOption作用一样
+    public async change2handelmode(robotid: number): Promise<void> {
+        const value: string = `${this.value}|${robotid.toString()}`;
+        await this.router.navigate(['/robotsstatues', value]);
     }
 
-    public async changeOption(idipc: string, name: string): Promise<void> {
-        const choosedid: number = Number(idipc);
+    public changeOption(idipc: number, name: string): void {
+        this.droid = this.droids?.[this.selectedDroidIndex - 1];
+        const choosedid: number = idipc;
         this.selectedDroidIndex = choosedid;
         this.displayText = name;
-        if (this.isLive() ?? false) {
-            this.disposeLive();
-            await this.onLiveClick();
-        }
-    }
-
-    public async changeTry(): Promise<void> {
-        const index: number = 2;
-        this.selectedDroidIndex = index;
-        if (this.isLive() ?? false) {
-            this.disposeLive();
-            await this.onLiveClick();
-        }
     }
 
     private async loadLive(ipcId: string): Promise<void> {

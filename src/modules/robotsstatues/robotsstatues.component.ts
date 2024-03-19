@@ -199,7 +199,7 @@ export class RobotsstatuesComponent {
 
     public async onLiveClick(): Promise<void> {
         if (typeof this.robotId != 'number') { return; }
-        const droid: Droid | undefined = this.droids?.[this.robotId];
+        const droid: Droid | undefined = this.droids?.[this.robotId - 1];
         if (droid?.ipcId) {
             this.disposeLive();
             this.isLive.set(false);
@@ -219,7 +219,7 @@ export class RobotsstatuesComponent {
 
     public async onIpcControl(action: 'up' | 'down' | 'left' | 'right'): Promise<void> {
         if (typeof this.robotId != 'number') { return; }
-        const droid: Droid | undefined = this.droids?.[this.robotId];
+        const droid: Droid | undefined = this.droids?.[this.robotId - 1];
         if (droid?.ipcId) {
             switch (action) {
                 case 'up':

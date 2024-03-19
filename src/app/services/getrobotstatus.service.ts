@@ -4,7 +4,7 @@ import { catchError, of, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface RandomUser {
-    id: string;
+    id: number;
     building: string;
     room: string;
     name: string;
