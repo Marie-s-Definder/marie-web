@@ -13,10 +13,14 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzTableFilterList, NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
-import { GetDataService, RandomUser } from '../../app/services/getdata.service';
+import { GetDataService, RandomUser, robotGet } from '../../app/services/getdata.service';
 import { HkIpcService } from '../../app/services/hkipc.service';
 import { InteractionService } from '../../app/services/interaction.service';
 import { environment } from '../../environments/environment';
+import { registerLocaleData } from '@angular/common';
+import zh from '@angular/common/locales/zh';
+
+registerLocaleData(zh);
 
 @Component({
     imports: [
@@ -51,9 +55,13 @@ export class RobotsstatuesComponent {
 
     public isVisible?: boolean = false;
 
+    public isVisiblepic?: boolean = false;
+
     public total: number = 1;
 
     public listOfRandomUser: Array<RandomUser> = [];
+
+    public listOfrobotGet: Array<robotGet> = [];
 
     public loading: boolean = true;
 
@@ -65,6 +73,10 @@ export class RobotsstatuesComponent {
 
     public date: null = null;
 
+    public robotId: number = 1;
+
+    public deviceName: string = 'none';
+
     public filterGender: NzTableFilterList = [
         { text: 'male', value: 'male' },
         { text: 'female', value: 'female' },
@@ -73,8 +85,6 @@ export class RobotsstatuesComponent {
     public pageIndex: number = 1;
 
     public modalWidth: string = 'auto';
-
-    private selectedDroidIndex?: number;
 
     private liveVideoNode?: HTMLVideoElement;
 
@@ -100,29 +110,75 @@ export class RobotsstatuesComponent {
 
         if (Array.isArray(this.droids) && this.droids.length > 0) {
             this.droidOptions = this.droids.map<NzSegmentedOption>(i => ({ label: i.name, value: i.id, icon: 'video-camera' }));
-            this.selectedDroidIndex = Number(value[0]);
+            this.robotId = Number(value[1]);
+            this.getDevice();
         } else {
             this.droidOptions = new Array<NzSegmentedOption>();
         }
+
     }
 
-    public showModal(): void {
+    public showModal(deviceName: string): void {
         this.isVisible = true;
-        this.loadDataFromServer([]);
+        this.deviceName = deviceName;
+        this.loadDataFromServer(this.robotId,deviceName,[]);
     }
 
     public handleCancel(): void {
         this.isVisible = false;
     }
 
+    public showModapic(): void {
+        this.isVisiblepic = true;
+    }
+
+    public handleCancelpic(): void {
+        this.isVisiblepic = false;
+    }
+
+    public showPic(path:string): void{
+        window.open(`${environment.apiUrl}/${path}`, '_blank');
+    }
+
+    public getDevice(): void {
+
+
+        this.loading = true;
+        this.randomUserService.getButtoneed(this.robotId).subscribe(data => {
+            this.loading = false;
+            this.total = 200;
+            // this.listOfrobotGet = data.data;
+            data.data.forEach(data => console.log(this.createButton(data.name)))
+        });
+
+    }
+
+    public createButton(buttonname: string): void {
+        let container = document.querySelector(".container");
+        if(!container){return;}
+        // 创建一个新的按钮元素
+        let button = document.createElement("button");
+
+        // 设置按钮的文本为按钮名称
+        button.innerText = buttonname;
+
+        // 添加点击事件
+        button.addEventListener("click", () => {
+            this.showModal(buttonname);
+        });
+
+        // 将按钮添加到容器中
+        container.appendChild(button);
+    }
+
     // 1
     public loadDataFromServer(
+        robotId: number,
+        deviceName: string,
         startendTime: Array<Date>,
     ): void {
-        const robotid: string = '0';
-        const deviceName: string = '仪表';
         this.loading = true;
-        this.randomUserService.getUsers(robotid, deviceName, startendTime).subscribe(data => {
+        this.randomUserService.getUsers(robotId, deviceName, startendTime).subscribe(data => {
             this.loading = false;
             this.total = 200;
             this.listOfRandomUser = data.data;
@@ -130,12 +186,22 @@ export class RobotsstatuesComponent {
     }
 
     public onChange(result: Array<Date>): void {
-        this.loadDataFromServer(result);
+        this.loadDataFromServer(this.robotId,this.deviceName,result);
+    }
+    public doCheck(): void {
+        this.loadDataFromServer(this.robotId,this.deviceName,this.getDates());
     }
 
+    public getDates():Array<Date> {
+        var currentDate = new Date(); // 获取当前时间
+        var pastDate = new Date(currentDate); // 创建当前时间的副本
+        pastDate.setHours(currentDate.getHours() - 24); // 减去24小时
+        return [pastDate, currentDate];
+      }
+
     public async onLiveClick(): Promise<void> {
-        if (typeof this.selectedDroidIndex != 'number') { return; }
-        const droid: Droid | undefined = this.droids?.[this.selectedDroidIndex];
+        if (typeof this.robotId != 'number') { return; }
+        const droid: Droid | undefined = this.droids?.[this.robotId];
         if (droid?.ipcId) {
             this.disposeLive();
             this.isLive.set(false);
@@ -146,7 +212,7 @@ export class RobotsstatuesComponent {
     }
 
     public async onSelectDroid(index: number): Promise<void> {
-        this.selectedDroidIndex = index;
+        this.robotId = index;
         if (this.isLive() ?? false) {
             this.disposeLive();
             await this.onLiveClick();
@@ -154,8 +220,8 @@ export class RobotsstatuesComponent {
     }
 
     public async onIpcControl(action: 'up' | 'down' | 'left' | 'right'): Promise<void> {
-        if (typeof this.selectedDroidIndex != 'number') { return; }
-        const droid: Droid | undefined = this.droids?.[this.selectedDroidIndex];
+        if (typeof this.robotId != 'number') { return; }
+        const droid: Droid | undefined = this.droids?.[this.robotId];
         if (droid?.ipcId) {
             switch (action) {
                 case 'up':
@@ -177,8 +243,8 @@ export class RobotsstatuesComponent {
     }
 
     public async onSnapshot(): Promise<void> {
-        if (typeof this.selectedDroidIndex != 'number') { return; }
-        const droid: Droid | undefined = this.droids?.[this.selectedDroidIndex];
+        if (typeof this.robotId != 'number') { return; }
+        const droid: Droid | undefined = this.droids?.[this.robotId];
         if (droid?.ipcId) {
             const res: string = await this.ipcService.snapshot(droid.ipcId);
             if (res) {

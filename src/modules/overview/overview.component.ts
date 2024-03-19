@@ -106,27 +106,19 @@ export class OverviewComponent implements OnInit {
     }
 
     // changeOption作用一样
-    public async change2handelmode(): Promise<void> {
+    public async change2handelmode(robotid: string): Promise<void> {
         // await this.router.navigate(['/robotsstatues', this.value]);
-        const value: string = `${this.value}|${this.selectedDroidIndex}`;
+        const value: string = `${this.value}|${robotid}`;
         await this.router.navigate(['/robotsstatues', value]);
-    }
-
-    public onQueryParamsChange(params: NzTableQueryParams): void {
-        const { pageSize, pageIndex, filter } = params;
-        this.loadDataFromServer(pageIndex, pageSize, filter);
     }
 
     // 对于buildingname和roomname首先传进来是007011，我需要分割为007和011，然后roomname直接就是area.name，然后看007，想办法去掉前面的0得到7然后找到areaservice里面id为7对应的name
     public loadDataFromServer(
-        pageIndex: number,
-        pageSize: number,
-        filter: Array<{ key: string; value: Array<string> }>,
+        buildingname: string | null,
+        roomname: string | undefined,
     ): void {
-        const buildingname: string = '10号楼';
-        const roomname: string = '夹层';
         this.loading = true;
-        this.randomUserService.getUsers(buildingname, roomname, pageIndex, pageSize, filter).subscribe(data => {
+        this.randomUserService.getUsers(buildingname, roomname).subscribe(data => {
             this.loading = false;
             this.total = 200;
             this.listOfRandomUser = data.data;
@@ -134,7 +126,11 @@ export class OverviewComponent implements OnInit {
     }
 
     public ngOnInit(): void {
-        this.loadDataFromServer(this.pageIndex, this.pageSize, []);
+        let front = this.value?.slice(0, 3).replace(/^0+/, '');
+        if (!front) { return; }
+        const buildingname: string | null = this.areaService.findNameById(front);
+        const roomname: string | undefined = this.area?.name;
+        this.loadDataFromServer(buildingname, roomname);
     }
 
     public async onLiveClick(): Promise<void> {

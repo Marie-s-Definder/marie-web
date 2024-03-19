@@ -39,7 +39,6 @@
                     [nzSize]="size"
                     [nzPageSize]="pageSize"
                     [nzPageIndex]="pageIndex"
-                    (nzQueryParams)="onQueryParamsChange($event)"
                     >
                     <thead>
                         <tr>
@@ -65,7 +64,7 @@
                             <ng-container *ngSwitchCase="3">故障</ng-container>
                           </td>
                         <td>
-                            <button nzType="primary" (click)="change2handelmode()">进入</button>
+                            <button nzType="primary" (click)="change2handelmode(data.id)">进入</button>
                         </td>
                         </tr>
                     </tbody>

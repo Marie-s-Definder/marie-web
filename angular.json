@@ -5,7 +5,8 @@
             "enabled": true,
             "environment": "all",
             "path": "./node_modules/.angular-cache"
-        }
+        },
+        "analytics": "91052107-43c3-42a7-9b6d-c9c1c472890c"
     },
     "newProjectRoot": "projects",
     "projects": {

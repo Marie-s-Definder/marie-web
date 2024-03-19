@@ -18,22 +18,12 @@ export class GetRobotStatusService {
     public constructor(private readonly http: HttpClient) {}
 
     public getUsers(
-        buildingname: string,
-        roomname: string,
-        pageIndex: number,
-        pageSize: number,
-        filters: Array<{ key: string; value: Array<string> }>,
+        buildingname: string | null,
+        roomname: string | undefined,
     ): Observable<{ data: Array<RandomUser> }> {
         let params: HttpParams = new HttpParams()
             .append('building', `${buildingname}`)
-            .append('room', `${roomname}`)
-            .append('page', `${pageIndex}`)
-            .append('results', `${pageSize}`);
-        filters.forEach(filter => {
-            filter.value.forEach(value => {
-                params = params.append(filter.key, value);
-            });
-        });
+            .append('room', `${roomname}`);
         return this.http
             .get<{ data: Array<RandomUser> }>(`${environment.apiUrl}/hkipc/queryRobot`, { params })
             .pipe(catchError(() => of({ data: [] })));

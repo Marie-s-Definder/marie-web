@@ -3,15 +3,21 @@ import { Injectable } from '@angular/core';
 import { catchError, of, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+export interface robotGet {
+    id: number;
+    robotId: number;
+    name: string;
+}
+
 export interface RandomUser {
-    id: string;
-    robotId: string;
-    deviceName: string;
+    id: number;
+    robotId: number;
+    devicename: string;
     date: string;
     name: string;
     result: string;
     status: string;
-    imgPath: string;
+    imgpath: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -21,17 +27,59 @@ export class GetDataService {
     public constructor(private readonly http: HttpClient) { }
 
     public getUsers(
-        robotid: string,
-        deviceName: string,
+        robotId: number,
+        devicename: string,
         startendTime: Array<Date>,
     ): Observable<{ data: Array<RandomUser> }> {
-        const params: HttpParams = new HttpParams()
-            .append('robotid', `${robotid}`)
-            .append('deviceName', `${deviceName}`)
-            .append('startTime', `${startendTime[0].toISOString()}`)
-            .append('endTime', `${startendTime[1].toISOString()}`);
+
+        let params: HttpParams = new HttpParams();
+        if (!startendTime.length) {
+            params = params
+                .append('robotId', robotId.toString())
+                .append('deviceName', devicename);
+        } else {
+            params = params
+                .append('robotId', robotId.toString())
+                .append('deviceName', devicename)
+                .append('startTime',this.returnDate(startendTime[0]))
+                .append('endTime', this.returnDate(startendTime[1]));
+        }
+        console.log(params);
         return this.http.get<{ data: Array<RandomUser> }>(`${environment.apiUrl}/hkipc/queryAllData`, { params })
             .pipe(catchError(() => of({ data: [] })));
+
+    }
+
+    public getButtoneed(
+        robotId: number,
+    ): Observable<{ data: Array<robotGet> }> {
+
+        let params: HttpParams = new HttpParams().append('robotId', robotId.toString());
+        return this.http.get<{ data: Array<robotGet> }>(`${environment.apiUrl}/hkipc/queryDevice`, { params })
+            .pipe(catchError(() => of({ data: [] })));
+    }
+
+    public returnDate(date?: Date): string | number {
+        if (date){
+            let formattedDate =
+                date.getFullYear() +
+                '-' +
+                String(date.getMonth() + 1).padStart(2, '0') +
+                '-' +
+                String(date.getDate()).padStart(2, '0') +
+                ' ' +
+                String(date.getHours()).padStart(2, '0') +
+                ':' +
+                String(date.getMinutes()).padStart(2, '0') +
+                ':' +
+                String(date.getSeconds()).padStart(2, '0');
+                return formattedDate.toString();
+        }else{
+            return 0;
+        }
+
+
+
     }
 
 }

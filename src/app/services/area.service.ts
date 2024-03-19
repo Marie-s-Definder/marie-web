@@ -343,4 +343,13 @@ export class AreaService {
         return this.areas.flatMap(i => i.children).find(i => i?.id == id) ?? null;
     }
 
+    public findNameById(id: string): string | null {
+        for (let i = 0; i < this.areas.length; i++) {
+            if (this.areas[i].id === id) {
+                return this.areas[i].name;
+            }
+        }
+        return null;
+    }
+
 }
