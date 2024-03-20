@@ -7,12 +7,14 @@ export interface RobotGet {
     id: number;
     robotId: number;
     name: string;
+    status: number;
 }
 
 export interface RandomUser {
     id: number;
     robotId: number;
     devicename: string;
+    getby: number;
     date: string;
     name: string;
     result: string;
@@ -43,6 +45,7 @@ export class GetDataService {
                 .append('robotId', robotId.toString())
                 .append('deviceName', devicename);
         }
+
         return this.http.get<{ data: Array<RandomUser> }>(`${environment.apiUrl}/hkipc/queryAllData`, { params }).pipe(catchError(() => of({ data: [] })));
     }
 

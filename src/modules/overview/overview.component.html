@@ -12,15 +12,16 @@
     <h4>{{ droidOptions[0].label }}</h4>
     }
     <main>
-      <nz-card nzTitle="实时监控" [nzExtra]="snapshot">
+      <nz-card nzTitle="实时监控" [nzExtra]="snapshot" >
         @if( !isLive() ){
-        <div nz-icon [nzType]=" isLive() == false ? 'loading' : 'play-circle' " (click)="onLiveClick();"></div>
+        <div nz-icon [nzType]=" 'loading' "></div>
         }
         <div class="holder" #liveHolder></div>
       </nz-card>
       <ng-template #snapshot>
-        <button nz-button nzType="text" nzShape="circle" (click)="onLiveClick();">
+        <button nz-button nzType="default" nzShape="round" (click)="onLiveClick();">
             <span nz-icon nzType="reload" nzTheme="outline"></span>
+            摄像头重连
         </button>
       </ng-template>
       <nz-card class="robot-status" nzTitle="机器人状态表格">

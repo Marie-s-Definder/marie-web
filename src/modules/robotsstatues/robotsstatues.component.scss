@@ -4,7 +4,7 @@
         height: auto;
         margin: auto;
         background-color: black;
-        max-height: 45vh;
+        max-height: 60vh;
     }
     nz-card.equipments {
         margin-top: 9px;
@@ -31,7 +31,7 @@
         display: flex;
         width: 100%;
         column-gap: 1rem;
-        height: 63%;
+        height: 83%;
     }
     nz-card {
         margin-top: 9px;
@@ -117,4 +117,23 @@ nz-range-picker {
     white-space: nowrap;
     gap: 10px;
     padding: 9px;
+}
+
+.button-red {
+    background-color: red;
+    color: rgb(0, 0, 0);
+}
+
+.button-green {
+    background-color: rgb(96, 241, 96);
+    color: rgb(0, 0, 0);
+}
+
+.pic img {
+    max-width: 200px; /* 设置最大宽度 */
+    max-height: 200px; /* 设置最大高度 */
+}
+
+* {
+    font-size: 18px;
 }

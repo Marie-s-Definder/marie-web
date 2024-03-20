@@ -34,24 +34,32 @@
     nz-header {
         display: flex;
         background: #75b9e6;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 24px;
-        font-weight: bold;
+        justify-content: center;
+        // align-items: center;
         padding: 10px;
     }
 
     .title {
         display: flex;
+        font-size: 32px;
+        font-weight: bold;
         align-items: center;
         color: #000000;
     }
 
     .menus {
+        position: absolute;
+        top: 1%;
+        right: 0%;
+        display: flex;
         margin-left: auto;
+        font-size: 16px;
+        font-weight: bold;
         color: #000000;
         padding: 9px;
+        gap: 10px;
     }
+
     .sider-menu {
         height: 100%;
         border-right: 0;

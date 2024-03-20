@@ -4,7 +4,7 @@
         height: auto;
         margin: auto;
         background-color: black;
-        max-height: 45vh;
+        max-height: 60vh;
     }
     main {
         display: grid;
@@ -57,4 +57,8 @@
     align-items: center;
     // height: 300px; /* 例如，设置容器的高度 */
     // border: 1px solid #090101; /* 为了演示而添加的边框 */
+}
+
+* {
+    font-size: 18px;
 }

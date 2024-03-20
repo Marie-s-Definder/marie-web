@@ -14,11 +14,9 @@ export class AreaService {
     private readonly areas: Array<Area> = [{
         id: '1',
         name: '1号楼',
-        icon: 'mobile',
         children: [{
             id: '001001',
             name: '中央空调机房',
-            icon: 'database',
         }, {
             id: '001002',
             name: '综合机房',
@@ -28,7 +26,6 @@ export class AreaService {
         }, {
             id: '001004',
             name: '风机房',
-            icon: 'heat-map',
         }, {
             id: '001005',
             name: '楼层井道',

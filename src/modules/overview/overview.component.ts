@@ -100,6 +100,7 @@ export class OverviewComponent implements OnInit {
         } else {
             this.droidOptions = new Array<NzSegmentedOption>();
         }
+        void this.onLiveClick();
     }
 
     // 对于buildingname和roomname首先传进来是007011，我需要分割为007和011，然后roomname直接就是area.name，然后看007，想办法去掉前面的0得到7然后找到areaservice里面id为7对应的name
@@ -147,16 +148,16 @@ export class OverviewComponent implements OnInit {
         await this.router.navigate(['/robotsstatues', value]);
     }
 
-    public changeOption(idipc: number, name: string): void {
+    public async changeOption(idipc: number, name: string): Promise<void> {
         this.droid = this.droids?.[this.selectedDroidIndex - 1];
         const choosedid: number = idipc;
         this.selectedDroidIndex = choosedid;
         this.displayText = name;
+        await this.onLiveClick();
     }
 
     private async loadLive(ipcId: string): Promise<void> {
         const liveUrl: string = await this.ipcService.getLiveUrl(ipcId);
-        console.log(liveUrl);
         if (!liveUrl) {
             this.isLive.set(undefined);
             await this.interaction.toast('获取当前摄像头实时监控失败');

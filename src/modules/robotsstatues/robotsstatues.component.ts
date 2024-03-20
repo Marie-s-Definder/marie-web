@@ -12,7 +12,7 @@ import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzIconDirective } from 'ng-zorro-antd/icon';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzTableFilterList, NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
+import { NzTableModule, NzTableSize } from 'ng-zorro-antd/table';
 import { GetDataService, RandomUser, RobotGet } from '../../app/services/getdata.service';
 import { HkIpcService } from '../../app/services/hkipc.service';
 import { InteractionService } from '../../app/services/interaction.service';
@@ -80,6 +80,18 @@ export class RobotsstatuesComponent {
 
     public modalWidth: string = 'auto';
 
+    public picpath: string = '';
+
+    public widthnz: string = '60%';
+
+    public picwidth: string = 'auto';
+
+    public picheight: string = 'auto';
+
+    public imageWidth: string = '100%';
+
+    public imageHeight: string = '100%';
+
     private liveVideoNode?: HTMLVideoElement;
 
     private liveHls?: Hls;
@@ -109,20 +121,25 @@ export class RobotsstatuesComponent {
         } else {
             this.droidOptions = new Array<NzSegmentedOption>();
         }
+        void this.onLiveClick();
     }
 
     public showModal(deviceName: string): void {
         this.isVisible = true;
         this.deviceName = deviceName;
-        this.loadDataFromServer(this.robotId, deviceName, []);
+        this.loadDataFromServer(this.robotId, this.deviceName, []);
+    }
+
+    public returnback(): void {
+        this.loadDataFromServer(this.robotId, this.deviceName, []);
     }
 
     public handleCancel(): void {
         this.isVisible = false;
     }
 
-    public showModapic(): void {
-        this.isVisiblepic = true;
+    public getPath(): string {
+        return `${environment.apiUrl}/${this.picpath}`;
     }
 
     public handleCancelpic(): void {
@@ -130,7 +147,8 @@ export class RobotsstatuesComponent {
     }
 
     public showPic(path: string): void {
-        window.open(`${environment.apiUrl}/${path}`, '_blank');
+        this.isVisiblepic = true;
+        this.picpath = path;
     }
 
     public getDevice(): void {
@@ -139,28 +157,58 @@ export class RobotsstatuesComponent {
             this.loading = false;
             this.total = 200;
             data.data.forEach(innerData => {
-                this.createButton(innerData.name);
+                this.createButton(innerData.name, innerData.status);
             });
         });
     }
 
-    public createButton(buttonname: string): void {
+    public createButton(buttonname: string, status: number): void {
         const container: HTMLElement | null = document.querySelector('.container');
         if (!container) { return; }
 
         // 创建一个新的按钮元素
         const button: HTMLButtonElement = document.createElement('button');
 
-        // 设置按钮的文本为按钮名称
+        const stat: string = status == 0 ? '正常' : '异常';
+
+        const chineseSpan: HTMLSpanElement = document.createElement('span');
+        chineseSpan.style.display = 'inline-block';
+        chineseSpan.style.margin = '0 0 0 0 px';
+        chineseSpan.style.padding = '0 px';
+        chineseSpan.textContent = `${stat}`;
+        button.style.padding = '0';
+        button.style.paddingLeft = '5px';
+        const color1: string = 'rgb(96, 241, 96)';
+        const color2: string = 'red';
+
+        if (status == 0) {
+            chineseSpan.style.backgroundColor = color1;
+            chineseSpan.style.border = `5px solid ${color1}`;
+            button.style.border = `2px solid ${color1}`;
+        } else if (status == 1) {
+            chineseSpan.style.backgroundColor = color2;
+            chineseSpan.style.border = `5px solid ${color2}`;
+            button.style.border = `2px solid ${color2}`;
+        }
+
         button.textContent = buttonname;
 
-        // 添加点击事件
         button.addEventListener('click', () => {
-            this.showModal(buttonname);
+            this.showModal(`${buttonname}`);
         });
 
-        // 将按钮添加到容器中
+        button.append(chineseSpan);
         container.append(button);
+    }
+
+    public calculateMaxWidth(): number {
+        return window.innerWidth * 0.7;
+    }
+
+    // 计算最大高度
+    public calculateMaxHeight(): number {
+        // 根据比例计算出最大高度
+        return window.innerHeight * 0.5;
     }
 
     // 1
@@ -241,7 +289,7 @@ export class RobotsstatuesComponent {
         if (droid?.ipcId) {
             const res: string = await this.ipcService.snapshot(droid.ipcId);
             if (res) {
-                window.open(`${environment.apiUrl}/${res}`, '_blank');
+                this.showPic(res);
             }
         }
     }
