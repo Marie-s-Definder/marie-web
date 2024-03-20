@@ -159,11 +159,13 @@
         </ng-container>
     </nz-modal>
 
-    <nz-modal [(nzVisible)]="isVisiblepic" nzTitle="巡检图片" (nzOnCancel)="handleCancelpic()" [nzFooter]=null [style.max-width.px]="calculateMaxWidth()" [style.max-height.px]="calculateMaxHeight()" [nzBodyStyle]="{'overflow': 'auto'}" >
-        <ng-container *nzModalContent>
-            <div class="pic">
-                <img id="myImage" [src]="getPath()" [style.max-width.px]="calculateMaxWidth()" [style.max-height.px]="calculateMaxHeight()">
-            </div>
-        </ng-container>
+    <nz-modal [(nzVisible)]="isVisiblepic" nzTitle="巡检图片" (nzOnCancel)="handleCancelpic()" [nzFooter]=null [nzWidth]='widthnz' [nzBodyStyle]="{'overflow': 'auto'}" >
+        <div class="diii">
+            <ng-container *nzModalContent>
+                <div class="pic">
+                    <img id="myImage" [src]="getPath()" [style.max-width.px]="calculateMaxWidth()" [style.max-height.px]="calculateMaxHeight()">
+                </div>
+            </ng-container>
+        </div>
     </nz-modal>
 
