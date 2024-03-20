@@ -133,13 +133,9 @@ export class OverviewComponent implements OnInit {
     public async onLiveClick(): Promise<void> {
         if (typeof this.selectedDroidIndex != 'number') { return; }
         this.droid = this.droids?.[this.selectedDroidIndex - 1];
-        if (this.droid?.ipcId) {
-            this.disposeLive();
-            this.isLive.set(false);
-            await this.loadLive(this.droid.ipcId);
-        } else {
-            await this.interaction.toast('没有找到当前机器人相关的摄像头信息');
-        }
+        this.disposeLive();
+        this.isLive.set(false);
+        await this.loadLive(this.droid?.ipcId);
     }
 
     // changeOption作用一样
@@ -156,7 +152,8 @@ export class OverviewComponent implements OnInit {
         await this.onLiveClick();
     }
 
-    private async loadLive(ipcId: string): Promise<void> {
+    private async loadLive(ipcId: string | undefined): Promise<void> {
+        if (!ipcId) { return; }
         const liveUrl: string = await this.ipcService.getLiveUrl(ipcId);
         if (!liveUrl) {
             this.isLive.set(undefined);

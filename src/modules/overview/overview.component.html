@@ -1,7 +1,7 @@
 @if ( area ) {
     <h3>{{ area.name }}</h3>
     @if( droidOptions.length == 0 ){
-    <div class="NO-robots">该区域没有相关机器人信息</div>
+    <div class="NO-robots">该区域未安装机器人</div>
     }@else {
     @if(droidOptions.length>1){
     <p>{{ displayText }}</p>
