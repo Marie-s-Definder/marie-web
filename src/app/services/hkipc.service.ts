@@ -40,24 +40,24 @@ export class HkIpcService {
     }
 
     public async pan(id: string, direction: 'left' | 'right'): Promise<void> {
-        await this.interaction.toast('努力移动中...', { type: 'loading' });
+        // await this.interaction.toast('努力移动中...', { type: 'loading' });
         const res: ApiResult<string> = await firstValueFrom(this.http.get<ApiResult<string>>(`${environment.apiUrl}/hkipc/pan`, {
             params: { id, direction },
         }).pipe(
             catchError(() => of({ ok: false, data: '' })),
         ));
 
-        await this.interaction.toast(res.ok ? '移动完成' : '移动未完成');
+        // await this.interaction.toast(res.ok ? '移动完成' : '移动未完成');
     }
 
     public async tilt(id: string, direction: 'up' | 'down'): Promise<void> {
-        await this.interaction.toast('努力移动中...', { type: 'loading' });
+        // await this.interaction.toast('努力移动中...', { type: 'loading' });
         const res: ApiResult<string> = await firstValueFrom(this.http.get<ApiResult<string>>(`${environment.apiUrl}/hkipc/tilt`, {
             params: { id, direction },
         }).pipe(
             catchError(() => of({ ok: false, data: '' })),
         ));
-        await this.interaction.toast(res.ok ? '移动完成' : '移动未完成');
+        // await this.interaction.toast(res.ok ? '移动完成' : '移动未完成');
     }
 
 }

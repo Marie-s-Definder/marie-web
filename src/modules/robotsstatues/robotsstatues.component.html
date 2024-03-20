@@ -84,21 +84,39 @@
     <!-- 弹出对话框内容 -->
     <nz-modal [(nzVisible)]="isVisible" nzTitle="查看设备" (nzOnCancel)="handleCancel()" [nzFooter]=null [nzWidth]='widthnz' [nzBodyStyle]="{ 'overflow': 'auto'}">
         <ng-container *nzModalContent>
-            <button nz-button nz-dropdown [nzDropdownMenu]="menu">
-                筛选条件
-                <i nz-icon nzType="down"></i>
-            </button>
-            <nz-dropdown-menu #menu="nzDropdownMenu">
-                <ul nz-menu>
-                  <li nz-menu-item>
-                    <a (click)="doCheck()">最近24小时</a>
-                  </li>
-                </ul>
-            </nz-dropdown-menu>
-            <nz-range-picker [nzShowTime]="true" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
-            <button nz-button (click)="returnback()">
-                清除筛选条件
-            </button>
+            <div class="boxxx">
+                <div>
+                    <button nz-button nz-dropdown [nzDropdownMenu]="menu">
+                        筛选条件
+                        <i nz-icon nzType="down"></i>
+                    </button>
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                        <ul nz-menu>
+                        <li nz-menu-item>
+                            <a (click)="doCheck('a')">最近24小时</a>
+                        </li>
+                        </ul>
+                        <ul nz-menu>
+                        <li nz-menu-item>
+                            <a (click)="doCheck('b')">最近一周</a>
+                        </li>
+                        </ul>
+                        <ul nz-menu>
+                            <li nz-menu-item>
+                            <a (click)="doCheck('c')">最近一个月</a>
+                            </li>
+                        </ul>
+                    </nz-dropdown-menu>
+                </div>
+                <div>
+                    <nz-range-picker [nzShowTime]="true" [(ngModel)]="date" (ngModelChange)="onChange($event)"></nz-range-picker>
+                </div>
+                <div>
+                    <button nz-button (click)="returnback()">
+                        清除筛选条件
+                    </button>
+                </div>
+            </div>
             <nz-table
             [nzFooter]="null"
             [nzData]="listOfRandomUser"

@@ -229,15 +229,17 @@ export class RobotsstatuesComponent {
         this.loadDataFromServer(this.robotId, this.deviceName, result);
     }
 
-    public doCheck(): void {
-        this.loadDataFromServer(this.robotId, this.deviceName, this.getDates());
-    }
-
-    public getDates(): Array<Date> {
+    public doCheck(type: string): void {
         const currentDate: Date = new Date();
         const pastDate: Date = new Date(currentDate);
-        pastDate.setHours(currentDate.getHours() - 24);
-        return [pastDate, currentDate];
+        if (type == 'a') {
+            pastDate.setHours(currentDate.getHours() - 24);
+        } else if (type == 'b') {
+            pastDate.setHours(currentDate.getHours() - 24 * 7);
+        } else if (type == 'c') {
+            pastDate.setHours(currentDate.getHours() - 24 * 31);
+        }
+        this.loadDataFromServer(this.robotId, this.deviceName, [pastDate, currentDate]);
     }
 
     public async onLiveClick(): Promise<void> {
