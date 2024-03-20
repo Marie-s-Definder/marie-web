@@ -178,6 +178,7 @@ export class RobotsstatuesComponent {
         chineseSpan.textContent = `${stat}`;
         button.style.padding = '0';
         button.style.paddingLeft = '5px';
+        button.style.cursor= 'pointer';
         const color1: string = 'rgb(96, 241, 96)';
         const color2: string = 'red';
 
