@@ -145,3 +145,11 @@ nz-range-picker {
 .diii {
     justify-content: center;
 }
+
+.status-abnormal {
+    color: red; /* 红色文本 */
+}
+
+.status-normal {
+    color: inherit; /* 正常颜色，可以是默认的颜色 */
+}
