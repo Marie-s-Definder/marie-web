@@ -80,6 +80,8 @@ export class RobotsstatuesComponent {
 
     public modalWidth: string = 'auto';
 
+    public buttonText: string = '筛选条件';
+
     public picpath: string = '';
 
     public widthnz: string = '60%';
@@ -131,6 +133,7 @@ export class RobotsstatuesComponent {
     }
 
     public returnback(): void {
+        this.buttonText = '筛选条件';
         this.loadDataFromServer(this.robotId, this.deviceName, []);
     }
 
@@ -235,10 +238,13 @@ export class RobotsstatuesComponent {
         const pastDate: Date = new Date(currentDate);
         if (type == 'a') {
             pastDate.setHours(currentDate.getHours() - 24);
+            this.buttonText = '最近24小时';
         } else if (type == 'b') {
             pastDate.setHours(currentDate.getHours() - 24 * 7);
+            this.buttonText = '最近7天';
         } else if (type == 'c') {
             pastDate.setHours(currentDate.getHours() - 24 * 31);
+            this.buttonText = '最近一个月';
         }
         this.loadDataFromServer(this.robotId, this.deviceName, [pastDate, currentDate]);
     }
@@ -266,6 +272,7 @@ export class RobotsstatuesComponent {
     public async onIpcControl(action: 'up' | 'down' | 'left' | 'right'): Promise<void> {
         if (typeof this.robotId != 'number') { return; }
         const droid: Droid | undefined = this.droids?.[this.robotId - 1];
+        console.log(droid?.ipcId)
         if (droid?.ipcId) {
             switch (action) {
                 case 'up':

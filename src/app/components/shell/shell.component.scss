@@ -38,7 +38,6 @@
         // align-items: center;
         padding: 10px;
     }
-
     .title {
         display: flex;
         font-size: 32px;
@@ -53,7 +52,7 @@
         right: 0%;
         display: flex;
         margin-left: auto;
-        font-size: 16px;
+        font-size: 18px;
         font-weight: bold;
         color: #000000;
         padding: 9px;
@@ -63,6 +62,8 @@
     .sider-menu {
         height: 100%;
         border-right: 0;
+        font-size: 20px;
+        font-weight: bold;
         user-select: none;
         overflow-y: auto;
         overflow-x: hidden;
@@ -81,4 +82,5 @@
 .logo {
     height: 36px;
 }
+
 // #75b9e6
