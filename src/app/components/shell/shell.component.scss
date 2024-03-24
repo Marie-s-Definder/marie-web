@@ -1,42 +1,44 @@
 :host {
+    // ::ng-deep .ant-menu-item-selected {
+    //     background-color: #929292; /* 设置被选中的二级导航背景色为 Ant Design 的主题色 */
+    //     color: #fff; /* 设置文字颜色为白色 */
+    // }
+    // ::ng-deep .ant-menu-item-selected {
+    //     border: none; /* 去除被选中的二级导航的边框 */
+    // }title
+    // ::ng-deep .ant-menu-item-selected {
+    //     color: inherit !important;
+    // }
+
+    ::ng-deep .ant-menu-item-selected {
+        background-color: #ffffff !important; /* 使用父元素的背景色 */
+        color: inherit !important; /* 使用父元素的文字颜色 */
+        border: none !important; /* 去除边框 */
+        box-shadow: none !important; /* 去除阴影 */
+        background-image: none !important; /* 去除背景渐变效果 */
+    }
+    .ant-menu-item-selected{
+        background:transparent;
+    }
+    .ant-menu-inline .ant-menu-item:after, .ant-menu-vertical-left .ant-menu-item:after, .ant-menu-vertical-right .ant-menu-item:after, .ant-menu-vertical .ant-menu-item:after{
+        border: none !important;
+    }
+
     display: block;
     height: 100%;
     nz-layout {
         height: 100%;
         &.inner {
-            padding: 9px;
+            padding: 2px;
         }
     }
-    // nz-header {
-    //     padding: 0 1rem;
-    //     background: #75b9e6;
-    //     display: flex;
-    //     // align-items: center;
-    //     // column-gap: 1rem;
-    //     white-space: nowrap;
-    //     .title {
-    //         color: #000000;
-    //         margin: auto;
-    //     }
-    //     .menus {
-    //         color: #000000;
-    //         margin-right: auto;
-    //     }
-    //     // div {
-    //     //     color: #000000;
-    //     //     font-size: 1rem;
-    //     //     margin-left: auto;
-    //     //     span {
-    //     //         margin-left: 1rem;
-    //     //     }
-    //     // }
-    // }
+
     nz-header {
         display: flex;
         background: #75b9e6;
         justify-content: center;
         // align-items: center;
-        padding: 10px;
+        padding: 9px;
     }
     .title {
         display: flex;
@@ -63,7 +65,7 @@
         height: 100%;
         border-right: 0;
         font-size: 20px;
-        font-weight: bold;
+        // font-weight: bold;
         user-select: none;
         overflow-y: auto;
         overflow-x: hidden;
@@ -71,16 +73,20 @@
             display: none;
         }
     }
-    nz-breadcrumb {
-        margin-bottom: 1rem;
-    }
     nz-content {
         background: #ffffff;
         padding: 1rem;
     }
 }
 .logo {
-    height: 36px;
+    height: 42px;
 }
 
-// #75b9e6
+.out {
+    font-size: 18px;
+}
+.in {
+    font-size: 18px;
+}
+
+

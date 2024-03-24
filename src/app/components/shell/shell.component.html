@@ -12,14 +12,14 @@
       </div>
     </nz-header>
     <nz-layout>
-      <nz-sider nzWidth="200px" nzTheme="dark">
+      <nz-sider nzWidth="200px" nzTheme="dark" >
         <ul nz-menu nzMode="inline" class="sider-menu">
           @for (area of areas; track area.id;) {
-          <li nz-submenu [nzTitle]="area.name" [nzOpen]="area.selected" [nzIcon]="area.icon || 'insert-row-left'">
+          <li class="out" nz-submenu [nzTitle]="area.name" [nzOpen]="area.selected" [nzIcon]="area.icon || 'insert-row-left'">
             @if( area.children && area.children.length > 0 ){
             <ul>
               @for (item of area.children; track item.id;) {
-              <li nz-menu-item [nzMatchRouter]="true" [routerLink]="[ './overview', item.id ]">
+              <li class="in" nz-menu-item [nzMatchRouter]="true" [routerLink]="[ './overview', item.id ]">
                 <span nz-icon [nzType]="item.icon || 'solution'"></span>
                 <span>{{ item.name }}</span>
             </li>
@@ -31,11 +31,6 @@
         </ul>
       </nz-sider>
       <nz-layout class="inner">
-        <!-- <nz-breadcrumb>
-          <nz-breadcrumb-item>Home</nz-breadcrumb-item>
-          <nz-breadcrumb-item>List</nz-breadcrumb-item>
-          <nz-breadcrumb-item>App</nz-breadcrumb-item>
-        </nz-breadcrumb> -->
         <nz-content>
           <router-outlet />
         </nz-content>

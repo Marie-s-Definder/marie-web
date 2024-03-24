@@ -6,6 +6,13 @@
         background-color: black;
         max-height: 60vh;
     }
+    ::ng-deep .ant-table-thead > tr > th {
+        background-color: #cccccc; /* 设置表头背景色为灰色 */
+        color: #333; /* 设置表头文字颜色为深灰色 */
+    }
+    ::ng-deep .ant-table-tbody > tr:nth-child(odd) {
+        background-color: #f7f7f7; /* 设置奇数行背景色为浅灰色 */
+    }
     nz-card.equipments {
         margin-top: 9px;
         flex: auto;
@@ -41,7 +48,7 @@
             width: 100%;
             font-size: 5rem;
             text-align: center;
-            color: #9f9f9f;
+            color: #ffffff;
             cursor: pointer;
         }
         &.droid-ctrl {
@@ -95,21 +102,36 @@ nz-modal {
     display: scroll;
     width: auto;
     padding: 9px;
-    // width: 100%;
-    // font-size: 5rem;
-    // text-align: center;
-    // color: #9f9f9f;
-    // cursor: pointer;
-    /* 设置宽度、字体大小、居中对齐、颜色和鼠标样式 */
 }
 
 nz-range-picker {
     margin: 0 8px 12px 0;
 }
-// .cont {
-//     max-height: 80vh; /* 最大高度为屏幕高度的80% */
-//     overflow-y: auto; /* 当内容过多时显示滚动条 */
-// }
+
+.jiankong {
+    position: absolute;
+    top: 0.8%;
+    left: 2%;
+    display: flex;
+    margin-left: auto;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+
+}
+
+.abutton {
+    position: absolute;
+    text-align: center;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    top: 0.8%;
+    right: 0.5%;
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+}
 
 .container {
     display: flex;
@@ -152,4 +174,14 @@ nz-range-picker {
 
 .status-normal {
     color: inherit; /* 正常颜色，可以是默认的颜色 */
+}
+
+.head {
+    font-size: 27px;
+}
+
+.biaoge {
+    position: absolute;
+    top: 1%;
+    left: 7%
 }

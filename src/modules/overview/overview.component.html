@@ -1,5 +1,5 @@
 @if ( area ) {
-    <h3>{{ area.name }}</h3>
+    <h3 class="head">{{ area.name }}</h3>
     @if( droidOptions.length == 0 ){
     <div class="NO-robots">该区域未安装机器人</div>
     }@else {
@@ -12,62 +12,65 @@
     <h4>{{ droidOptions[0].label }}</h4>
     }
     <main>
-      <nz-card nzTitle="实时监控" [nzExtra]="snapshot" >
+      <nz-card [nzExtra]="snapshot" >
+
         @if( !isLive() ){
         <div nz-icon [nzType]=" 'loading' "></div>
         }
         <div class="holder" #liveHolder></div>
       </nz-card>
       <ng-template #snapshot>
-        <button nz-button nzType="default" nzShape="round" (click)="onLiveClick();">
-            <span nz-icon nzType="reload" nzTheme="outline"></span>
-            摄像头重连
-        </button>
+        <div class="jiankong">实时监控</div>
+        <div class="abutton">
+            <button (click)="onLiveClick();">
+                <span nz-icon nzType="reload" nzTheme="outline"></span>
+                摄像头重连
+            </button>
+        </div>
       </ng-template>
-      <nz-card class="robot-status" nzTitle="机器人状态表格">
-            <div class="table">
-                <nz-table
-                    [nzFooter]="null"
-                    [nzData]="listOfRandomUser"
-                    [nzFrontPagination]="false"
-                    [nzShowPagination]="false"
-                    [nzShowSizeChanger]="false"
-                    [nzLoading]="loading"
-                    [nzTotal]="total"
-                    [nzSize]="size"
-                    [nzPageSize]="pageSize"
-                    [nzPageIndex]="pageIndex"
-                    >
-                    <thead>
-                        <tr>
-                        <th>查看画面</th>
-                        <th>机器人编号</th>
-                        <!-- <th nzColumnKey="name" [nzSortFn]="true">机器人编号</th>
-                        <th nzColumnKey="status" [nzFilters]="filterGender" [nzFilterFn]="true">状态</th> -->
-                        <th>状态</th>
-                        <th>进入控制</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let data of listOfRandomUser">
-                        <td>
-                            <button nzType="primary" (click)="changeOption(data.id, data.name)">查看</button>
-                        </td>
-                        <td>{{ data.name }}</td>
-                        <!-- <td>{{ data.status }}</td> -->
-                        <td [ngSwitch]="data.status">
-                            <ng-container *ngSwitchCase="0">手动巡检</ng-container>
-                            <ng-container *ngSwitchCase="1">自动巡检</ng-container>
-                            <ng-container *ngSwitchCase="2">关闭</ng-container>
-                            <ng-container *ngSwitchCase="3">故障</ng-container>
-                          </td>
-                        <td>
-                            <button nzType="primary" (click)="change2handelmode(data.id)">进入</button>
-                        </td>
-                        </tr>
-                    </tbody>
-                </nz-table>
-            </div>
+      <nz-card class="robot-status" [nzExtra]="tabelname">
+        <ng-template #tabelname>
+            <div class="biaoge">机器人状态表格</div>
+        </ng-template>
+            <nz-table
+                [nzFooter]="null"
+                [nzData]="listOfRandomUser"
+                [nzFrontPagination]="false"
+                [nzShowPagination]="false"
+                [nzShowSizeChanger]="false"
+                [nzLoading]="loading"
+                [nzTotal]="total"
+                [nzSize]="size"
+                [nzPageSize]="pageSize"
+                [nzPageIndex]="pageIndex"
+                >
+                <thead>
+                    <tr>
+                    <th>查看画面</th>
+                    <th>机器人编号</th>
+                    <th>状态</th>
+                    <th>进入控制</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of listOfRandomUser">
+                    <td>
+                        <button nzType="primary" (click)="changeOption(data.id, data.name)">查看</button>
+                    </td>
+                    <td>{{ data.name }}</td>
+                    <!-- <td>{{ data.status }}</td> -->
+                    <td [ngSwitch]="data.status">
+                        <ng-container *ngSwitchCase="0">手动巡检</ng-container>
+                        <ng-container *ngSwitchCase="1">自动巡检</ng-container>
+                        <ng-container *ngSwitchCase="2">关闭</ng-container>
+                        <ng-container *ngSwitchCase="3">故障</ng-container>
+                    </td>
+                    <td>
+                        <button nzType="primary" (click)="change2handelmode(data.id)">进入</button>
+                    </td>
+                    </tr>
+                </tbody>
+            </nz-table>
       </nz-card>
     </main>
     }

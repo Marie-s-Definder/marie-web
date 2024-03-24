@@ -6,6 +6,13 @@
         background-color: black;
         max-height: 60vh;
     }
+    ::ng-deep .ant-table-thead > tr > th {
+        background-color: #cccccc; /* 设置表头背景色为灰色 */
+        color: #333; /* 设置表头文字颜色为深灰色 */
+    }
+    ::ng-deep .ant-table-tbody > tr:nth-child(odd) {
+        background-color: #f7f7f7; /* 设置奇数行背景色为浅灰色 */
+    }
     main {
         display: grid;
         grid-template-columns: 3fr 1fr;
@@ -14,6 +21,7 @@
         height: 83%;
     }
     nz-card {
+        border: 3px solid #eeeeee;
         margin-top: 9px;
         flex: auto;
         overflow-y: scroll;
@@ -21,9 +29,10 @@
             width: 100%;
             font-size: 5rem;
             text-align: center;
-            color: #9f9f9f;
+            color: #ffffff;
             cursor: pointer;
         }
+
         &.droid-robot-status {
             flex: 0 1 30rem;
             width: 99px;
@@ -49,16 +58,51 @@
     }
 }
 
+.jiankong {
+    position: absolute;
+    top: 0.8%;
+    left: 2%;
+    display: flex;
+    margin-left: auto;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+
+}
+
+.abutton {
+    position: absolute;
+    text-align: center;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    top: 0.8%;
+    right: 0.5%;
+    display: flex;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000000;
+}
+
 .NO-robots {
     height: 100%;
     margin: 9px;
     display: flex;
     justify-content: center;
     align-items: center;
-    // height: 300px; /* 例如，设置容器的高度 */
-    // border: 1px solid #090101; /* 为了演示而添加的边框 */
 }
 
 * {
     font-size: 20px;
 }
+
+.head {
+    font-size: 27px;
+}
+
+.biaoge {
+    position: absolute;
+    top: 1%;
+    left: 7%;
+
+}
+

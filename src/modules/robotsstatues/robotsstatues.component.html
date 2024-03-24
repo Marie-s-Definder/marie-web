@@ -1,5 +1,5 @@
 @if ( area ) {
-    <h3>查看设备</h3>
+    <h3 class="head">查看设备</h3>
     @if( droidOptions.length == 0 ){
     <div>该区域没有相关机器人信息</div>
     }@else {
@@ -22,23 +22,29 @@
     <h4>{{ droidOptions[0].label }}</h4>
     }
     <main>
-      <nz-card nzTitle="实时监控" [nzExtra]="snapshot">
+      <nz-card [nzExtra]="snapshot">
         @if( !isLive() ){
         <div nz-icon [nzType]=" 'loading' "></div>
         }
         <div class="holder" #liveHolder></div>
       </nz-card>
       <ng-template #snapshot>
+        <div class="jiankong">实时监控</div>
         <!-- <button nz-button nzType="default" nzShape="round" (click)="onSnapshot();">
           <span nz-icon nzType="camera" nzTheme="outline"></span>
           视频截图
         </button> -->
-        <button nz-button nzType="default" nzShape="round" (click)="onLiveClick();">
-            <span nz-icon nzType="reload" nzTheme="outline"></span>
-            摄像头重连
-        </button>
+        <div class="abutton">
+            <button (click)="onLiveClick();">
+                <span nz-icon nzType="reload" nzTheme="outline"></span>
+                摄像头重连
+            </button>
+        </div>
       </ng-template>
-      <nz-card class="droid-ctrl" nzTitle="机器人控制面板">
+      <nz-card class="droid-ctrl" [nzExtra]="tabelname">
+        <ng-template #tabelname>
+            <div class="biaoge">机器人控制面板</div>
+        </ng-template>
         <article class="ipc-ctrl">
           <!-- <nav>摄像头控制</nav> -->
           <div>
@@ -82,7 +88,7 @@
     }
 
     <!-- 弹出对话框内容 -->
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="查看设备" (nzOnCancel)="handleCancel()" [nzFooter]=null [nzWidth]='widthnz' [nzBodyStyle]="{ 'overflow': 'auto'}">
+    <nz-modal [(nzVisible)]="isVisible" [nzTitle]='deviceName' (nzOnCancel)="handleCancel()" [nzFooter]=null [nzWidth]='widthnz' [nzBodyStyle]="{ 'overflow': 'auto' }">
         <ng-container *nzModalContent>
             <div class="boxxx">
                 <div>
