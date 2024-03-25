@@ -292,6 +292,23 @@ export class RobotsstatuesComponent {
             }
         }
     }
+    public async onIpcFocal(action: 'in' | 'out'): Promise<void> {
+        if (typeof this.robotId != 'number') { return; }
+        const droid: Droid | undefined = this.droids?.[this.robotId - 1];
+        console.log(droid?.ipcId)
+        if (droid?.ipcId) {
+            switch (action) {
+                case 'in':
+                    await this.ipcService.zoom(droid.ipcId, 'in');
+                    break;
+                case 'out':
+                    await this.ipcService.zoom(droid.ipcId, 'out');
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     public async onSnapshot(): Promise<void> {
         if (typeof this.robotId != 'number') { return; }

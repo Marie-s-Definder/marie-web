@@ -6,13 +6,7 @@
         background-color: black;
         max-height: 60vh;
     }
-    ::ng-deep .ant-table-thead > tr > th {
-        background-color: #cccccc; /* 设置表头背景色为灰色 */
-        color: #333; /* 设置表头文字颜色为深灰色 */
-    }
-    ::ng-deep .ant-table-tbody > tr:nth-child(odd) {
-        background-color: #f7f7f7; /* 设置奇数行背景色为浅灰色 */
-    }
+
     nz-card.equipments {
         margin-top: 9px;
         flex: auto;
@@ -157,7 +151,7 @@ nz-range-picker {
 }
 
 * {
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .boxxx {
@@ -184,4 +178,12 @@ nz-range-picker {
     position: absolute;
     top: 1%;
     left: 7%
+}
+
+::ng-deep .ant-table-thead > tr > th {
+    background-color: #cccccc; /* 设置表头背景色为灰色 */
+    color: #333; /* 设置表头文字颜色为深灰色 */
+}
+::ng-deep .ant-table-tbody > tr:nth-child(odd) {
+    background-color: #f7f7f7; /* 设置奇数行背景色为浅灰色 */
 }

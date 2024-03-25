@@ -60,4 +60,13 @@ export class HkIpcService {
         // await this.interaction.toast(res.ok ? '移动完成' : '移动未完成');
     }
 
+    public async zoom(id: string, direction: 'in' | 'out'): Promise<void> {
+        // await this.interaction.toast('努力移动中...', { type: 'loading' });
+        const res: ApiResult<string> = await firstValueFrom(this.http.get<ApiResult<string>>(`${environment.apiUrl}/hkipc/zoom`, {
+            params: { id, direction },
+        }).pipe(
+            catchError(() => of({ ok: false, data: '' })),
+        ));
+        // await this.interaction.toast(res.ok ? '移动完成' : '移动未完成');
+    }
 }
