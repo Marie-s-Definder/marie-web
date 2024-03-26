@@ -310,6 +310,21 @@ export class RobotsstatuesComponent {
         }
     }
 
+    public async startCheck(): Promise<void> {
+        if (typeof this.robotId != 'number') { return; }
+        const droid: Droid | undefined = this.droids?.[this.robotId - 1];
+        if (droid?.ipcId) {
+            await this.ipcService.zoom(droid.ipcId, 'in');
+        }
+    }
+    public async stopCheck(): Promise<void> {
+        if (typeof this.robotId != 'number') { return; }
+        const droid: Droid | undefined = this.droids?.[this.robotId - 1];
+        if (droid?.ipcId) {
+            await this.ipcService.zoom(droid.ipcId, 'in');
+        }
+    }
+
     public async onSnapshot(): Promise<void> {
         if (typeof this.robotId != 'number') { return; }
         const droid: Droid | undefined = this.droids?.[this.robotId - 1];

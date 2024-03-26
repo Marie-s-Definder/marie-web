@@ -78,6 +78,16 @@
                 <span nz-icon nzType="zoom-out"></span>
                 </button>
             </div>
+            <div>
+                <button class="robotctrl" nz-button nzType="primary" nzShape="circle" (click)="stopCheck()">
+                手动控制
+                </button>
+            </div>
+            <div>
+                <button class="robotctrl" nz-button nzType="primary" nzShape="circle" (click)="startCheck()">
+                切回自动巡检
+                </button>
+            </div>
           </div>
         </article>
       </nz-card>
