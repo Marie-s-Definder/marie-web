@@ -314,14 +314,14 @@ export class RobotsstatuesComponent {
         if (typeof this.robotId != 'number') { return; }
         const droid: Droid | undefined = this.droids?.[this.robotId - 1];
         if (droid?.ipcId) {
-            await this.ipcService.zoom(droid.ipcId, 'in');
+            await this.ipcService.startTimer(droid.ipcId);
         }
     }
     public async stopCheck(): Promise<void> {
         if (typeof this.robotId != 'number') { return; }
         const droid: Droid | undefined = this.droids?.[this.robotId - 1];
         if (droid?.ipcId) {
-            await this.ipcService.zoom(droid.ipcId, 'in');
+            await this.ipcService.stopTimer(droid.ipcId);
         }
     }
 
