@@ -84,6 +84,14 @@
                             grid-area: 4 / 4 / 5 / 5;
                             text-align: center;
                         }
+                        &:nth-child(7) {
+                            grid-area: 5 / 2 / 6 / 3;
+                            text-align: center;
+                        }
+                        &:nth-child(8) {
+                            grid-area: 5 / 4 / 6 / 5;
+                            text-align: center;
+                        }
                     }
                 }
             }
